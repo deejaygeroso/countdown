@@ -1,17 +1,10 @@
 import getDuration from "./getDuration";
+import showSecondsInString from "./showSecondsInString";
 
-const showSecondsInString = (input) => {
-  if (input === 60) {
-    return "00";
-  } else if (input > 9) {
-    return input.toString();
-  } else {
-    return `0${input}`;
-  }
-};
-
-const getCountdownTimer = (startDate) => {
-  const duration = getDuration(startDate);
+// getCountdownTimer timer is coded to be limited to 3 minutes only.
+// this also assumes/expects that date would always be less or equal to current date.
+const getCountdownTimer = (startDate, numberOfSecondsUsed = 0) => {
+  const duration = getDuration(startDate, numberOfSecondsUsed);
 
   let minutes = 0;
   let seconds = "0";

@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { getCountdownTimer } from "../lib";
+import { getCountdownTimer, getRemainingTime } from "../lib";
 
 const CountDown = (props) => {
-  const { startDate } = props;
+  const { isActive, numberOfSecondsUsed, startDate } = props;
   const [minutes, setMinutes] = useState("0");
   const [seconds, setSeconds] = useState("00");
 
   const startCountDown = () => {
-    const [tempMinutes, tempSeconds] = getCountdownTimer(startDate);
+    const [tempMinutes, tempSeconds] = getCountdownTimer(
+      startDate,
+      numberOfSecondsUsed
+    );
+    setMinutes(tempMinutes);
+    setSeconds(tempSeconds);
+  };
+
+  const showRemainingTime = () => {
+    const [tempMinutes, tempSeconds] = getRemainingTime(numberOfSecondsUsed);
     setMinutes(tempMinutes);
     setSeconds(tempSeconds);
   };
 
   useEffect(() => {
-    const countDownInterval = setInterval(() => {
-      startCountDown();
-    }, 100);
+    if (isActive) {
+      const countDownInterval = setInterval(() => {
+        startCountDown();
+      }, 100);
 
-    return () => {
-      clearInterval(countDownInterval);
-    };
+      return () => {
+        clearInterval(countDownInterval);
+      };
+    } else {
+      showRemainingTime();
+    }
   });
 
   if (!startDate) {

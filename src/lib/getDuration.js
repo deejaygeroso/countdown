@@ -1,9 +1,14 @@
 import moment from "moment";
 
-const getDuration = (startDate) => {
+const getDuration = (startDate, numberOfSecondsUsed = 0) => {
   var now = moment();
   var start = moment(startDate);
-  var duration = moment.duration(now.diff(start));
+  var startTimeWithAdditionalTimeUsed = moment(start).subtract(
+    numberOfSecondsUsed,
+    "seconds"
+  );
+
+  var duration = moment.duration(now.diff(startTimeWithAdditionalTimeUsed));
 
   return duration;
 };

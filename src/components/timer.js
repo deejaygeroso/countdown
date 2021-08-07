@@ -62,8 +62,6 @@ const Timer = () => {
     return <div className="timer-container">Loading...</div>;
   }
 
-  console.log("numberOfSecondsUsed", numberOfSecondsUsed);
-
   return (
     <div className="timer-container">
       <div style={{ fontSize: "0.8em", paddingBottom: "15px" }}>
@@ -72,7 +70,11 @@ const Timer = () => {
       </div>
 
       <div className="timer">
-        <CountDown startDate={startDate} />
+        <CountDown
+          isActive={isActive}
+          numberOfSecondsUsed={numberOfSecondsUsed}
+          startDate={startDate}
+        />
 
         <div style={{ textAlign: "center", paddingTop: "1em" }}>
           <button className="button" onClick={timerStartStop}>
