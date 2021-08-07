@@ -1,6 +1,6 @@
 import "./App.css";
 import AppContext, { useAppContext } from "./AppContext";
-import Timer from "./components/timer";
+import Timer from "./components/Timer";
 
 function App() {
   const context = useAppContext();

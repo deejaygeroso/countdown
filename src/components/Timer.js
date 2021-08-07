@@ -3,24 +3,46 @@ import { useContext, useEffect, useState } from "react";
 import AppContext from "../AppContext";
 import config from "../config.json";
 import { dbDocumentListen, dbDocumentSet } from "../lib/firestore";
+import { getDuration } from "../lib";
+import CountDown from "./CountDown";
 
 const Timer = () => {
   const context = useContext(AppContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isActive, setIsActive] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [numberOfSecondsUsed, setNumberOfSecondsUsed] = useState(0);
+
+  const getTotalDurationInSeconds = () => {
+    if (!startDate) {
+      return 0;
+    }
+
+    // Added 1 second to synchronize automatic countdown which was added to the method startCountDown on CountDown component.
+    return (
+      Math.trunc(getDuration(startDate, numberOfSecondsUsed).asSeconds()) + 1
+    );
+  };
 
   const timerStartStop = async () => {
-    dbDocumentSet(context, config.timer.docId, {
-      isActive: !isActive,
-      // TODO: Add additional data fields to store here
-    });
+    const totalDurationInSeconds = getTotalDurationInSeconds(startDate);
+
+    const documentToBeUpdated = { isActive: !isActive };
+    if (!isActive) {
+      documentToBeUpdated["startTime"] = new Date();
+    } else {
+      documentToBeUpdated["numberOfSecondsUsed"] = totalDurationInSeconds;
+    }
+
+    dbDocumentSet(context, config.timer.docId, documentToBeUpdated);
   };
 
   const timerReset = async () => {
     dbDocumentSet(context, config.timer.docId, {
       isActive: false,
-      // TODO: Add additional data fields to store here
+      numberOfSecondsUsed: 0,
+      startTime: new Date(),
     });
   };
 
@@ -32,7 +54,11 @@ const Timer = () => {
       (data) => {
         setIsActive(data.isActive);
         setIsLoading(false);
-        // TODO: Add additional code here to react to changes in data fields
+        setNumberOfSecondsUsed(data.numberOfSecondsUsed);
+
+        if (data.startTime) {
+          setStartDate(data.startTime.toDate());
+        }
       }
     );
 
@@ -54,8 +80,11 @@ const Timer = () => {
       </div>
 
       <div className="timer">
-        {/* TODO: Make this a real countdown value */}
-        <div className="countdown">{"2:49"}</div>
+        <CountDown
+          isActive={isActive}
+          numberOfSecondsUsed={numberOfSecondsUsed}
+          startDate={startDate}
+        />
 
         <div style={{ textAlign: "center", paddingTop: "1em" }}>
           <button className="button" onClick={timerStartStop}>
