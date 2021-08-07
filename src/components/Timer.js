@@ -15,6 +15,10 @@ const Timer = () => {
   const [numberOfSecondsUsed, setNumberOfSecondsUsed] = useState(0);
 
   const getTotalDurationInSeconds = () => {
+    if (!startDate) {
+      return 0;
+    }
+
     // Added 1 second to synchronize automatic countdown which was added to the method startCountDown on CountDown component.
     return (
       Math.trunc(getDuration(startDate, numberOfSecondsUsed).asSeconds()) + 1

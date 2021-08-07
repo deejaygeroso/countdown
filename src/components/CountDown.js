@@ -7,12 +7,14 @@ const CountDown = (props) => {
   const [seconds, setSeconds] = useState("00");
 
   const startCountDown = () => {
-    const [tempMinutes, tempSeconds] = getCountdownTimer(
-      startDate,
-      numberOfSecondsUsed + 1 // Adding 1 second to automatically start counting down.
-    );
-    setMinutes(tempMinutes);
-    setSeconds(tempSeconds);
+    if (startDate) {
+      const [tempMinutes, tempSeconds] = getCountdownTimer(
+        startDate,
+        numberOfSecondsUsed + 1 // Adding 1 second to automatically start counting down.
+      );
+      setMinutes(tempMinutes);
+      setSeconds(tempSeconds);
+    }
   };
 
   const showRemainingTime = () => {
