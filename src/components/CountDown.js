@@ -37,7 +37,7 @@ const CountDown = (props) => {
     if (!isActive) {
       showRemainingTime();
     }
-  }, [numberOfSecondsUsed]);
+  });
 
   if (!startDate) {
     <div className="countdown">0:00</div>;

@@ -50,8 +50,11 @@ const Timer = () => {
       (data) => {
         setIsActive(data.isActive);
         setIsLoading(false);
-        setStartDate(data.startTime.toDate());
         setNumberOfSecondsUsed(data.numberOfSecondsUsed);
+
+        if (data.startTime) {
+          setStartDate(data.startTime.toDate());
+        }
       }
     );
 
