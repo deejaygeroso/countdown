@@ -30,6 +30,7 @@ const Timer = () => {
       context,
       config.timer.docId,
       (data) => {
+        console.log("data", data);
         setIsActive(data.isActive);
         setIsLoading(false);
         // TODO: Add additional code here to react to changes in data fields
