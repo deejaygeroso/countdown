@@ -3,12 +3,14 @@ import { useContext, useEffect, useState } from "react";
 import AppContext from "../AppContext";
 import config from "../config.json";
 import { dbDocumentListen, dbDocumentSet } from "../lib/firestore";
+import CountDown from "./CountDown";
 
 const Timer = () => {
   const context = useContext(AppContext);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isActive, setIsActive] = useState(false);
+  const [startDate, setStartDate] = useState(null);
 
   const timerStartStop = async () => {
     dbDocumentSet(context, config.timer.docId, {
@@ -20,6 +22,7 @@ const Timer = () => {
   const timerReset = async () => {
     dbDocumentSet(context, config.timer.docId, {
       isActive: false,
+      startTime: new Date(),
       // TODO: Add additional data fields to store here
     });
   };
@@ -30,9 +33,9 @@ const Timer = () => {
       context,
       config.timer.docId,
       (data) => {
-        console.log("data", data);
         setIsActive(data.isActive);
         setIsLoading(false);
+        setStartDate(data.startTime.toDate());
         // TODO: Add additional code here to react to changes in data fields
       }
     );
@@ -55,8 +58,7 @@ const Timer = () => {
       </div>
 
       <div className="timer">
-        {/* TODO: Make this a real countdown value */}
-        <div className="countdown">{"2:49"}</div>
+        <CountDown startDate={startDate} />
 
         <div style={{ textAlign: "center", paddingTop: "1em" }}>
           <button className="button" onClick={timerStartStop}>
