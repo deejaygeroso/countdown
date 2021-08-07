@@ -1,4 +1,4 @@
-import moment from "moment";
+import getDuration from "./getDuration";
 
 const showSecondsInString = (input) => {
   if (input === 60) {
@@ -11,15 +11,13 @@ const showSecondsInString = (input) => {
 };
 
 const getCountdownTimer = (startDate) => {
-  var now = moment();
-  var start = moment(startDate);
-  var duration = moment.duration(now.diff(start));
+  const duration = getDuration(startDate);
 
-  var minutes = 0;
-  var seconds = "0";
+  let minutes = 0;
+  let seconds = "0";
 
-  var tempMinutes = 3 - duration.minutes();
-  var tempSeconds = 60 - duration.seconds();
+  const tempMinutes = 3 - duration.minutes();
+  const tempSeconds = 60 - duration.seconds();
 
   if (duration.asSeconds() >= 180) {
     return ["0", "00"];
