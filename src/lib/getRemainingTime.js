@@ -1,6 +1,6 @@
 import showSecondsInString from "./showSecondsInString";
 
-const getRemainingTime = (numberOfSecondsUsed) => {
+const getRemainingTime = (numberOfSecondsUsed = 0) => {
   const remainingSeconds = 180 - numberOfSecondsUsed;
 
   if (remainingSeconds <= 0) {
