@@ -30,10 +30,14 @@ const CountDown = (props) => {
       return () => {
         clearInterval(countDownInterval);
       };
-    } else {
-      showRemainingTime();
     }
   });
+
+  useEffect(() => {
+    if (!isActive) {
+      showRemainingTime();
+    }
+  }, [numberOfSecondsUsed]);
 
   if (!startDate) {
     <div className="countdown">0:00</div>;
