@@ -9,7 +9,7 @@ const CountDown = (props) => {
   const startCountDown = () => {
     const [tempMinutes, tempSeconds] = getCountdownTimer(
       startDate,
-      numberOfSecondsUsed
+      numberOfSecondsUsed + 1 // Adding 1 second to automatically start counting down.
     );
     setMinutes(tempMinutes);
     setSeconds(tempSeconds);
