@@ -3,7 +3,7 @@ import { getCountdownTimer, getRemainingTime } from "../lib";
 
 const CountDown = (props) => {
   const { isActive, timeUsed, startTime } = props;
-  const [countDownTimer, setCountDownTimer] = useState("0:00");
+  const [countDownTimer, setCountDownTimer] = useState("00:00");
 
   useEffect(() => {
     if (isActive) {
