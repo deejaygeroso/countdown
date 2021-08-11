@@ -1,33 +1,20 @@
-import getDuration from "./getDuration";
-import showSecondsInString from "./showSecondsInString";
-
 // getCountdownTimer timer is coded to be limited to 3 minutes only.
-// this also assumes/expects that date would always be less or equal to current date.
-const getCountdownTimer = (startDate, numberOfSecondsUsed = 0) => {
-  const duration = getDuration(startDate, numberOfSecondsUsed);
+// this also assumes/expects that startTime would always be less or equal to Date.now().
+const getCountdownTimer = (startTime, numberOfSecondsUsed = 0) => {
+  const timeUsed = Date.now() - startTime;
+  const threeMinutes = 180000;
+  const remainingTime = threeMinutes - timeUsed;
 
-  let minutes = 0;
-  let seconds = "0";
+  if (remainingTime >= 0) {
+    var options = { minute: "numeric", second: "numeric" };
+    const newCountDownTimer = new Intl.DateTimeFormat("en-US", options).format(
+      remainingTime
+    );
 
-  const tempMinutes = 3 - duration.minutes();
-  const tempSeconds = 60 - duration.seconds();
-
-  if (duration.asSeconds() >= 180) {
-    return ["0", "00"];
+    return newCountDownTimer;
   }
 
-  if (tempSeconds === 60) {
-    minutes = tempMinutes;
-    seconds = showSecondsInString(0);
-  } else if (tempSeconds < 60) {
-    minutes = tempMinutes - 1;
-    seconds = showSecondsInString(tempSeconds);
-  } else {
-    minutes = tempMinutes;
-    seconds = showSecondsInString(tempSeconds);
-  }
-
-  return [minutes.toString(), seconds];
+  return "0:00";
 };
 
 export default getCountdownTimer;
