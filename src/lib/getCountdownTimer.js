@@ -14,7 +14,7 @@ const getCountdownTimer = (startTime, timeUsed = 0) => {
     return newCountDownTimer;
   }
 
-  return "0:00";
+  return "00:00";
 };
 
 export default getCountdownTimer;
