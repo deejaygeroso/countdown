@@ -1,55 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { getCountdownTimer, getRemainingTime } from "../lib";
 
 const CountDown = (props) => {
-  const { isActive, numberOfSecondsUsed, startDate } = props;
-  const [minutes, setMinutes] = useState("0");
-  const [seconds, setSeconds] = useState("00");
+  const { isActive, numberOfSecondsUsed, startTime } = props;
+  const [countDownTimer, setCountDownTimer] = useState("0:00");
 
   const startCountDown = () => {
-    if (startDate) {
-      const [tempMinutes, tempSeconds] = getCountdownTimer(
-        startDate,
-        numberOfSecondsUsed + 1 // Adding 1 second to automatically start counting down.
-      );
-      setMinutes(tempMinutes);
-      setSeconds(tempSeconds);
-    }
+    const timeUsed = Date.now() - startTime;
+    const threeMinutes = 180000;
+    const remainingTime = threeMinutes - timeUsed;
+
+    var options = { minute: "numeric", second: "numeric" };
+    const newCountDownTimer = new Intl.DateTimeFormat("en-US", options).format(
+      remainingTime
+    );
+
+    setCountDownTimer(newCountDownTimer);
   };
 
-  const showRemainingTime = () => {
-    const [tempMinutes, tempSeconds] = getRemainingTime(numberOfSecondsUsed);
-    setMinutes(tempMinutes);
-    setSeconds(tempSeconds);
-  };
+  // const showRemainingTime = () => {
+  //   const [tempMinutes, tempSeconds] = getRemainingTime(numberOfSecondsUsed);
+  //   setMinutes(tempMinutes);
+  //   setSeconds(tempSeconds);
+  //   1628659837877 - 1628659838878;
+  // };
 
   useEffect(() => {
-    if (isActive) {
-      const countDownInterval = setInterval(() => {
-        startCountDown();
-      }, 100); // 100ms allows timer to look synchronized when viewed within two windows/browsers side by side.
+    // if (isActive) {
+    const countDownInterval = setInterval(() => {
+      startCountDown();
+    }, 100); // 100ms allows timer to look synchronized when viewed within two windows/browsers side by side.
 
-      return () => {
-        clearInterval(countDownInterval);
-      };
-    }
-  }, [isActive, startDate, numberOfSecondsUsed]);
+    return () => {
+      clearInterval(countDownInterval);
+    };
+    // }
+  }, [isActive, startTime, numberOfSecondsUsed]);
 
-  useEffect(() => {
-    if (!isActive) {
-      showRemainingTime();
-    }
-  }, [isActive, numberOfSecondsUsed]);
+  // useEffect(() => {
+  //   if (!isActive) {
+  //     showRemainingTime();
+  //   }
+  // }, [isActive, numberOfSecondsUsed]);
 
-  if (!startDate) {
+  if (!startTime) {
     <div className="countdown">0:00</div>;
   }
 
-  return (
-    <div className="countdown">
-      {minutes}:{seconds}
-    </div>
-  );
+  return <div className="countdown">{countDownTimer}</div>;
 };
 
 export default CountDown;
