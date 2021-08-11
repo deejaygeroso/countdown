@@ -27,7 +27,7 @@ const CountDown = (props) => {
     if (isActive) {
       const countDownInterval = setInterval(() => {
         startCountDown();
-      }, 100);
+      }, 100); // 100ms allows timer to look synchronized when viewed within two windows/browsers side by side.
 
       return () => {
         clearInterval(countDownInterval);
