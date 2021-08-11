@@ -1,16 +1,13 @@
-import showSecondsInString from "./showSecondsInString";
+const getRemainingTime = (timeUsed = 0) => {
+  const threeMinutes = 180000;
+  const remainingTime = threeMinutes - timeUsed;
 
-const getRemainingTime = (numberOfSecondsUsed = 0) => {
-  const remainingSeconds = 180 - numberOfSecondsUsed;
+  var options = { minute: "numeric", second: "numeric" };
+  const newCountDownTimer = new Intl.DateTimeFormat("en-US", options).format(
+    remainingTime
+  );
 
-  if (remainingSeconds <= 0) {
-    return ["0", "00"];
-  }
-
-  var mins = Math.floor((remainingSeconds % 3600) / 60);
-  var secs = Math.floor(remainingSeconds % 60);
-
-  return [mins.toString(), showSecondsInString(secs)];
+  return newCountDownTimer;
 };
 
 export default getRemainingTime;
