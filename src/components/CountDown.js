@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { getCountdownTimer, getRemainingTime } from "../lib";
+import { getCountdownTimer } from "../lib";
 
 const CountDown = (props) => {
   const { isActive, timeUsed, startTime } = props;
-  const [countDownTimer, setCountDownTimer] = useState("00:00");
+  const [countDownTimer, setCountDownTimer] = useState("0:00");
 
   useEffect(() => {
     if (isActive) {
       const countDownInterval = setInterval(() => {
-        const newCountDownTimer = getCountdownTimer(startTime, timeUsed);
+        const totalTimeUsed = Date.now() - startTime + timeUsed;
+        const newCountDownTimer = getCountdownTimer(totalTimeUsed);
         setCountDownTimer(newCountDownTimer);
       }, 100); // 100ms allows timer to look synchronized when viewed within two windows/browsers side by side.
 
@@ -20,7 +21,7 @@ const CountDown = (props) => {
 
   useEffect(() => {
     if (!isActive) {
-      const newCountDownTimer = getRemainingTime(timeUsed);
+      const newCountDownTimer = getCountdownTimer(timeUsed);
       setCountDownTimer(newCountDownTimer);
     }
   }, [isActive, timeUsed]);

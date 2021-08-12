@@ -1,9 +1,7 @@
 // getCountdownTimer timer is coded to be limited to 3 minutes only.
-// this also assumes/expects that startTime would always be less or equal to Date.now().
-const getCountdownTimer = (startTime, timeUsed = 0) => {
-  const totalTimeUsed = Date.now() - startTime + timeUsed;
-  const threeMinutes = 180000;
-  const remainingTime = threeMinutes - totalTimeUsed;
+const getCountdownTimer = (timeUsed = 0) => {
+  const threeMinutes = 180000; // 180000ms or 3minutes
+  const remainingTime = threeMinutes - timeUsed;
 
   if (remainingTime >= 0) {
     var options = { minute: "numeric", second: "numeric" };
@@ -11,10 +9,10 @@ const getCountdownTimer = (startTime, timeUsed = 0) => {
       remainingTime
     );
 
-    return newCountDownTimer;
+    return newCountDownTimer.slice(1, 5); // removes the leading 0 in minutes. This will now look like 0:00 instead of 00:00
   }
 
-  return "00:00";
+  return "0:00";
 };
 
 export default getCountdownTimer;
