@@ -1,55 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { getCountdownTimer, getRemainingTime } from "../lib";
+import { getCountdownTimer } from "../lib";
 
 const CountDown = (props) => {
-  const { isActive, numberOfSecondsUsed, startDate } = props;
-  const [minutes, setMinutes] = useState("0");
-  const [seconds, setSeconds] = useState("00");
-
-  const startCountDown = () => {
-    if (startDate) {
-      const [tempMinutes, tempSeconds] = getCountdownTimer(
-        startDate,
-        numberOfSecondsUsed + 1 // Adding 1 second to automatically start counting down.
-      );
-      setMinutes(tempMinutes);
-      setSeconds(tempSeconds);
-    }
-  };
-
-  const showRemainingTime = () => {
-    const [tempMinutes, tempSeconds] = getRemainingTime(numberOfSecondsUsed);
-    setMinutes(tempMinutes);
-    setSeconds(tempSeconds);
-  };
+  const { isActive, timeUsed, startTime } = props;
+  const [countDownTimer, setCountDownTimer] = useState("0:00");
 
   useEffect(() => {
+    // Timer will countdown.
     if (isActive) {
       const countDownInterval = setInterval(() => {
-        startCountDown();
-      }, 100);
+        const totalTimeUsed = Date.now() - startTime + timeUsed;
+        const newCountDownTimer = getCountdownTimer(totalTimeUsed);
+        setCountDownTimer(newCountDownTimer);
+      }, 100); // 100ms allows timer to look synchronized when viewed within two windows/browsers side by side.
 
       return () => {
         clearInterval(countDownInterval);
       };
     }
-  });
+  }, [isActive, startTime, timeUsed]);
 
   useEffect(() => {
+    // When paused, show remaining time.
     if (!isActive) {
-      showRemainingTime();
+      const newCountDownTimer = getCountdownTimer(timeUsed);
+      setCountDownTimer(newCountDownTimer);
     }
-  });
+  }, [isActive, timeUsed]);
 
-  if (!startDate) {
+  if (startTime === null) {
     <div className="countdown">0:00</div>;
   }
 
-  return (
-    <div className="countdown">
-      {minutes}:{seconds}
-    </div>
-  );
+  return <div className="countdown">{countDownTimer}</div>;
 };
 
 export default CountDown;
