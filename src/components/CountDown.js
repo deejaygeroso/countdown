@@ -6,6 +6,7 @@ const CountDown = (props) => {
   const [countDownTimer, setCountDownTimer] = useState("0:00");
 
   useEffect(() => {
+    // Timer will countdown.
     if (isActive) {
       const countDownInterval = setInterval(() => {
         const totalTimeUsed = Date.now() - startTime + timeUsed;
@@ -20,6 +21,7 @@ const CountDown = (props) => {
   }, [isActive, startTime, timeUsed]);
 
   useEffect(() => {
+    // When paused, show remaining time.
     if (!isActive) {
       const newCountDownTimer = getCountdownTimer(timeUsed);
       setCountDownTimer(newCountDownTimer);
